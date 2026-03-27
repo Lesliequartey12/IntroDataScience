@@ -210,8 +210,8 @@ def _():
     total = 0
 
     # Write your loop here
-    for num in range(1,101):
-        total += num
+    for var in range(1,101):
+        total += var
 
 
     print(f"Sum of 1 to 100: {total}")
