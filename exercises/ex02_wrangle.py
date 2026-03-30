@@ -34,8 +34,7 @@ def _():
     import plotly.graph_objects as go
     from datetime import datetime
     import marimo as mo
-    return (mo,)
-
+    return mo,pl
 
 @app.cell(hide_code=True)
 def _(mo):
@@ -46,24 +45,28 @@ def _(mo):
 
 
 @app.cell
-def _():
+def _(pl):
     # TODO: Load the students.csv file using Polars
     # The file is at: ../data/raw/students.csv
 
-    students = None  # Replace with pl.read_csv(...)
+      # Replace with pl.read_csv(...)
+      students = pl.read_csv("../data/raw/students.csv")
 
     # TODO: Display the first 10 rows
-    return
+      return (students)
 
 
 @app.cell
-def _():
+def _(students,df):
     # TODO: Display basic information about the students dataset
     # - How many rows and columns?
     # - What are the column names?
     # - What are the data types?
 
     # Hint: Use students.shape, students.columns, students.dtypes, or students.describe()
+    print(f"Rows: {students.shape[0]}, Columns: {students.shape[1]}")
+    print("Students Columns:", students.columns)
+    print(df.dtypes)
     return
 
 
@@ -76,21 +79,23 @@ def _(mo):
 
 
 @app.cell
-def _():
+def _(students,pl):
     # TODO: Filter to find students who scored above 85 on their test
 
     high_scorers = None  # Use students.filter(...)
+    high_scorers = students.filter(pl.col("test_score"))
 
     print(f"Number of high scorers: {len(high_scorers) if high_scorers is not None else 0}")
-    return
+    return (high_scorers)
 
 
 @app.cell
-def _():
+def _(students,pl):
     # TODO: Filter to find students in grade_level 10 with attendance_rate > 90%
 
     grade_10_good_attendance = None  # Use multiple conditions with &
-    return
+    grade_10_good_attendance = students.filter((pl.col("grade_level")==10) & (pl.col("attendance_rate")))
+    return (grade_10_good_attendance)
 
 
 @app.cell(hide_code=True)
@@ -102,15 +107,17 @@ def _(mo):
 
 
 @app.cell
-def _():
+def _(students,pl):
     # TODO: Select only the name, grade_level, and test_score columns
 
     subset = None  # Use students.select(...)
-    return
+    subset = students.select("name", "grade_level", "test_score")
+
+    return (subset)
 
 
 @app.cell
-def _():
+def _(students_categorized,pl):
     # TODO: Create a new column "performance_category" that categorizes students:
     # - "Excellent" if test_score >= 90
     # - "Good" if test_score >= 75
@@ -120,7 +127,12 @@ def _():
     # Hint: Use pl.when().then().otherwise() chains
 
     students_categorized = None
-    return
+    students_categorized = pl.when(pl.col("test_score") >=90).then("Excellent") \
+        .when(pl.col("test_score") >= 75).then("Good") \
+        .when(pl.col("test_score") < 75).then("Needs Improvement") \
+        .otherwise("Unknown")
+              
+    return (students_categorized)
 
 
 @app.cell(hide_code=True)
@@ -132,19 +144,21 @@ def _(mo):
 
 
 @app.cell
-def _():
+def _(pl):
     # TODO: Load the sales.json file
     # The file is at: ../data/raw/sales.json
 
-    sales = None  # Replace with pl.read_json(...)
-    return
+    sales = pl.read_json("../data/raw/sales.json")  # Replace with pl.read_json(...)
+    return (sales)
 
 
 @app.cell
-def _():
+def _(sales):
     # TODO: Display basic info about the sales dataset
     # How many transactions? What's the date range?
-    return
+    print("Number of transactions:", len(sales))
+    print("Date range:", sales["date"].min(), "to", sales["date"].max)
+    return 
 
 
 @app.cell(hide_code=True)
