@@ -27,7 +27,7 @@ def _(mo):
     return
 
 
-@app.cell
+@app.cell(hide_code=True)
 def _():
     import polars as pl
     import plotly.express as px
@@ -45,7 +45,7 @@ def _(mo):
     return
 
 
-@app.cell
+@app.cell(hide_code=True)
 def _(pl):
     # TODO: Load the students.csv file using Polars
     # The file is at: ../data/raw/students.csv
@@ -162,41 +162,38 @@ def _(sales):
     return 
 
 
-@app.cell(hide_code=True)
-def _(mo):
-    mo.md(r"""
-    ## Part 5: Aggregations and Grouping
-    """)
-    return
-
-
-@app.cell
-def _():
+def _(pl, sales):
     # TODO: Calculate total sales by product_category
     # Sum up the total_amount for each category
     # Sort by total sales descending
 
-    category_sales = None  # Use group_by() and agg()
-
+    category_sales = sales.group_by("product_category").agg(pl.sum("total_amount").alias("total_sales")).sort("total_sales", descending=True)
+    print(category_sales)
+    print(category_sales["total_sales"].sum())
     return
 
 
 @app.cell
-def _():
+def _(pl, sales):
     # TODO: Find the average transaction amount by payment_method
+    from click import group
 
-    avg_by_payment = None
-
+    avg_by_payment = sales.group_by("payment_method").agg(pl.mean("total_amount").alias("avg_transaction_amount"))  # Use group_by() and agg()
+    print(avg_by_payment)
     return
 
 
 @app.cell
-def _():
+def _(pl, sales):
     # TODO: Count how many transactions each region had
     # Also calculate the total revenue per region
+    from numpy.char import count
 
-    region_summary = None  # Group by region, count and sum
-
+    region_summary = sales.group_by("region").agg(
+        pl.count("transaction_id").alias("transaction_count"),
+        pl.sum("total_amount").alias("total_revenue")
+    )  # Group by region, count and sum
+    print(region_summary)
     return
 
 
@@ -209,20 +206,25 @@ def _(mo):
 
 
 @app.cell
-def _():
+def _(pl, sales):
     # TODO: Convert the date column to datetime type
     # Then extract the month and create a new column "month"
 
-    sales_with_month = None  # Use with_columns() and pl.col().str.to_date()
-    return
+    sales_with_month = sales.with_columns(
+        pl.col("date").str.to_date().alias("date"),
+        pl.col("date").str.to_date().dt.month().alias("month")  # Chain the conversion here
+    )
+    print(sales_with_month.select("date", "month").head())
+    return (sales_with_month,)
 
 
 @app.cell
-def _():
+def _(pl, sales_with_month):
     # TODO: Calculate total sales by month
     # Show which month had the highest revenue
 
-    monthly_sales = None
+    monthly_sales = sales_with_month.group_by("month").agg(pl.sum("total_amount").alias("total_sales")).sort("total_sales", descending=True)
+    print(monthly_sales)   
     return
 
 
