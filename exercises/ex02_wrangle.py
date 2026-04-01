@@ -1,6 +1,6 @@
 import marimo
 
-__generated_with = "0.19.6"
+__generated_with = "0.20.4"
 app = marimo.App(width="medium")
 
 
@@ -34,7 +34,8 @@ def _():
     import plotly.graph_objects as go
     from datetime import datetime
     import marimo as mo
-    return (mo,)
+
+    return mo, pl
 
 
 @app.cell(hide_code=True)
@@ -51,14 +52,14 @@ def _(pl):
     # The file is at: ../data/raw/students.csv
 
       # Replace with pl.read_csv(...)
-      students = pl.read_csv("../data/raw/students.csv")
+    students = pl.read_csv("../data/raw/students")
 
     # TODO: Display the first 10 rows
-      return (students)
+    return (students,pl)
 
 
 @app.cell
-def _(students,df):
+def _(df, students):
     # TODO: Display basic information about the students dataset
     # - How many rows and columns?
     # - What are the column names?
@@ -80,23 +81,23 @@ def _(mo):
 
 
 @app.cell
-def _(students,pl):
+def _(pl, students):
     # TODO: Filter to find students who scored above 85 on their test
 
     high_scorers = None  # Use students.filter(...)
     high_scorers = students.filter(pl.col("test_score"))
 
     print(f"Number of high scorers: {len(high_scorers) if high_scorers is not None else 0}")
-    return (high_scorers)
+    return
 
 
 @app.cell
-def _(students,pl):
+def _(pl, students):
     # TODO: Filter to find students in grade_level 10 with attendance_rate > 90%
 
     grade_10_good_attendance = None  # Use multiple conditions with &
     grade_10_good_attendance = students.filter((pl.col("grade_level")==10) & (pl.col("attendance_rate")))
-    return (grade_10_good_attendance)
+    return grade_10_good_attendance
 
 
 @app.cell(hide_code=True)
@@ -108,17 +109,16 @@ def _(mo):
 
 
 @app.cell
-def _(students,pl):
+def _(students):
     # TODO: Select only the name, grade_level, and test_score columns
 
     subset = None  # Use students.select(...)
     subset = students.select("name", "grade_level", "test_score")
-
-    return (subset)
+    return subset
 
 
 @app.cell
-def _(students_categorized,pl):
+def _(pl,students_categorized):
     # TODO: Create a new column "performance_category" that categorizes students:
     # - "Excellent" if test_score >= 90
     # - "Good" if test_score >= 75
@@ -132,8 +132,8 @@ def _(students_categorized,pl):
         .when(pl.col("test_score") >= 75).then("Good") \
         .when(pl.col("test_score") < 75).then("Needs Improvement") \
         .otherwise("Unknown")
-              
-    return (students_categorized)
+
+    return students_categorized
 
 
 @app.cell(hide_code=True)
@@ -150,7 +150,7 @@ def _(pl):
     # The file is at: ../data/raw/sales.json
 
     sales = pl.read_json("../data/raw/sales.json")  # Replace with pl.read_json(...)
-    return (sales)
+    return sales
 
 
 @app.cell
@@ -159,17 +159,6 @@ def _(sales):
     # How many transactions? What's the date range?
     print("Number of transactions:", len(sales))
     print("Date range:", sales["date"].min(), "to", sales["date"].max)
-    return 
-
-
-def _(pl, sales):
-    # TODO: Calculate total sales by product_category
-    # Sum up the total_amount for each category
-    # Sort by total sales descending
-
-    category_sales = sales.group_by("product_category").agg(pl.sum("total_amount").alias("total_sales")).sort("total_sales", descending=True)
-    print(category_sales)
-    print(category_sales["total_sales"].sum())
     return
 
 
@@ -245,13 +234,13 @@ def _(mo):
 
     **What's next?**
 
-    - Move on to Exercise 3: Plot
+    # - Move on to Exercise 3: Plot
 
-    **Pro Tips:**
+    # **Pro Tips:**
 
-    - Chain Polars operations for cleaner code
-    - Always explore your data before plotting
-    """)
+    # - Chain Polars operations for cleaner code
+    # - Always explore your data before plotting
+    # """)
     return
 
 
