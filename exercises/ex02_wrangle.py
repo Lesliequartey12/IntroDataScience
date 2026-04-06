@@ -52,7 +52,7 @@ def _(pl):
     # The file is at: ../data/raw/students.csv
 
       # Replace with pl.read_csv(...)
-    students = pl.read_csv("../data/raw/students")
+    students = pl.read_csv("data/raw/students")
 
     # TODO: Display the first 10 rows
     return (students,pl)
