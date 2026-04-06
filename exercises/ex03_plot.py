@@ -121,7 +121,7 @@ def _(pl, px):
         y="test_score",
         color="grade_level",
         trendline="ols",  
-        title="Attendance Rate vs Test Score"
+        title="Attendance Rate vs Test Score",
         labels={"attendance_rate": "Attendance Rate (%)", "test_score": "Test Score"}
     )   
   # Create your plot here
@@ -165,7 +165,7 @@ def _(mo):
 
 
 @app.cell
-def _():
+def _(px, pl, sales, category_sales, region_summary):
     # TODO: Create a dashboard with 2 subplots:
     # 1. Top plot: Bar chart of sales by category (reuse category_sales)
     # 2. Bottom plot: Bar chart of sales by region (reuse region_summary)
@@ -192,7 +192,7 @@ def _():
 
     # Uncomment when ready:
     ex_fig5.show()
-    return
+    return category_sales, region_summary, go, make_subplots
 
 
 @app.cell(hide_code=True)
