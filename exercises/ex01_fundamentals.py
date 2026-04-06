@@ -1,14 +1,14 @@
 # /// script
 # requires-python = ">=3.12"
 # dependencies = [
-#     "marimo",
+#     "marimo>=0.20.2",
 #     "pyzmq",
 # ]
 # ///
 
 import marimo
 
-__generated_with = "0.19.6"
+__generated_with = "0.20.4"
 app = marimo.App(width="medium")
 
 
@@ -75,10 +75,10 @@ def _():
     # 3. 100 divided by 7 (keep decimals)
     # 4. 2 to the power of 10
 
-    sum_result = 45 + 67  # TODO
-    product = 12 * 8  # TODO
-    division = 100 / 7  # TODO
-    power = 2 ** 10  # TODO
+    sum_result = 0  # TODO
+    product = 0  # TODO
+    division = 0  # TODO
+    power = 0  # TODO
 
     print(f"Sum: {sum_result}")
     print(f"Product: {product}")
@@ -98,18 +98,16 @@ def _(mo):
 @app.cell
 def _():
     # TODO: Create a list of your 5 favorite foods
-    favorite_foods = ["Rice", "Beans", "Gari", "Palmnut_soup"]  # Add your foods here
+    favorite_foods = []  # Add your foods here
 
     # TODO: Print the first food
-    print(f"First food: {favorite_foods[0]}")  # Fix this line
+    print(f"First food: ???")  # Fix this line
 
     # TODO: Print the last food
-    print(f"Last food: {favorite_foods[3]}")  # Fix this line
+    print(f"Last food: ???")  # Fix this line
 
     # TODO: Add another food to the list
     # (use the append method)
-
-    favorite_foods.append("Fufu")
 
     # TODO: Print the length of the list
     print(f"Number of foods: {len(favorite_foods)}")  # Fix this line
@@ -133,10 +131,6 @@ def _():
     # - pages: number of pages (integer)
 
     book = {
-            "title" : "The black fox",
-            "author" : "Micheal Buxton",
-            "year" : 2026,
-            "pages" : 156
         # Add your key-value pairs here
     }
 
@@ -145,11 +139,8 @@ def _():
     print(f"Author: {book['author']}")  # Fix this line
 
     # TODO: Add a new key "genre" with a value
-    book["second_author"] = "Alex Brown"
 
     # TODO: Update the year to a different value
-    book["year"] = 2027
-
 
     print("\nUpdated book:", book)
     return
@@ -171,17 +162,9 @@ def _():
     # - If temp > 10: "It's cool"
     # - Otherwise: "It's cold!"
 
-    temperature = 17 # Try changing this value
+    temperature = 25  # Try changing this value
 
     # Write your if/elif/else statements here
-    if temperature >= 30:
-        print("It's hot")
-    elif temperature >= 20:
-        print("It's warm")
-    elif temperature >= 10:
-        print("It's cool")
-    else:
-        print("It's cold!")
     return
 
 
@@ -210,9 +193,6 @@ def _():
     total = 0
 
     # Write your loop here
-    for var in range(1,101):
-        total += var
-
 
     print(f"Sum of 1 to 100: {total}")
     return
@@ -232,9 +212,6 @@ def _():
     # Use a list comprehension!
 
     squares = []  # Use list comprehension here
-    number_list = [1,2,3,4,5,6,7,8,9,10]
-    for n in number_list:
-        squares.append(n ** 2)
 
     print(f"Squares: {squares}")
     # Expected: [1, 4, 9, 16, 25, 36, 49, 64, 81, 100]
@@ -247,8 +224,8 @@ def _():
     # Use a list comprehension with a condition!
 
     all_numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
-    even_numbers = [n for n in all_numbers if n % 2 == 0]  # Use list comprehension here
-    
+    even_numbers = []  # Use list comprehension here
+
     print(f"Even numbers: {even_numbers}")
     # Expected: [2, 4, 6, 8, 10, 12]
     return
@@ -268,13 +245,7 @@ def _():
     # Example: greet("Alice") should return "Hello, Alice!"
 
     def greet(name):
-        "Say Hey"
-        return f'Hey {name}!'
-    message = greet("Alice")
-    print(message)
-
-    message1 = greet("Bob")
-    print(message1)
+        pass  # Replace with your code
 
     # Test your function
     print(greet("Alice"))
@@ -297,8 +268,7 @@ def _():
     # It should return width * height
 
     def calculate_area(width, height):
-        area = width * height
-        return(area) 
+        pass  # Replace with your code
 
     # Test your function
     area1 = calculate_area(5, 10)
@@ -329,9 +299,9 @@ def _():
 
         # Write your code here
         result = {
-            "count": len(numbers),
-            "sum": sum(numbers),
-            "average": sum(numbers) / len(numbers) 
+            "count": 0,
+            "sum": 0,
+            "average": 0
         }
         return result
 
@@ -372,6 +342,7 @@ def _(mo):
 @app.cell
 def _():
     import marimo as mo
+
     return (mo,)
 
 

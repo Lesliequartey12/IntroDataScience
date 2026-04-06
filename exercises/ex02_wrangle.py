@@ -1,3 +1,11 @@
+# /// script
+# requires-python = ">=3.13"
+# dependencies = [
+#     "marimo>=0.20.2",
+#     "pyzmq>=27.1.0",
+# ]
+# ///
+
 import marimo
 
 __generated_with = "0.20.4"
@@ -46,29 +54,25 @@ def _(mo):
     return
 
 
-@app.cell(hide_code=True)
-def _(pl):
+@app.cell
+def _():
     # TODO: Load the students.csv file using Polars
     # The file is at: ../data/raw/students.csv
 
-      # Replace with pl.read_csv(...)
-    students = pl.read_csv("data/raw/students")
+    students = None  # Replace with pl.read_csv(...)
 
     # TODO: Display the first 10 rows
-    return (students,pl)
+    return
 
 
 @app.cell
-def _(df, students):
+def _():
     # TODO: Display basic information about the students dataset
     # - How many rows and columns?
     # - What are the column names?
     # - What are the data types?
 
     # Hint: Use students.shape, students.columns, students.dtypes, or students.describe()
-    print(f"Rows: {students.shape[0]}, Columns: {students.shape[1]}")
-    print("Students Columns:", students.columns)
-    print(df.dtypes)
     return
 
 
@@ -85,7 +89,6 @@ def _(pl, students):
     # TODO: Filter to find students who scored above 85 on their test
 
     high_scorers = None  # Use students.filter(...)
-    high_scorers = students.filter(pl.col("test_score"))
 
     print(f"Number of high scorers: {len(high_scorers) if high_scorers is not None else 0}")
     return
@@ -96,8 +99,7 @@ def _(pl, students):
     # TODO: Filter to find students in grade_level 10 with attendance_rate > 90%
 
     grade_10_good_attendance = None  # Use multiple conditions with &
-    grade_10_good_attendance = students.filter((pl.col("grade_level")==10) & (pl.col("attendance_rate")))
-    return grade_10_good_attendance
+    return
 
 
 @app.cell(hide_code=True)
@@ -113,12 +115,11 @@ def _(students):
     # TODO: Select only the name, grade_level, and test_score columns
 
     subset = None  # Use students.select(...)
-    subset = students.select("name", "grade_level", "test_score")
-    return subset
+    return
 
 
 @app.cell
-def _(pl,students_categorized):
+def _():
     # TODO: Create a new column "performance_category" that categorizes students:
     # - "Excellent" if test_score >= 90
     # - "Good" if test_score >= 75
@@ -128,12 +129,7 @@ def _(pl,students_categorized):
     # Hint: Use pl.when().then().otherwise() chains
 
     students_categorized = None
-    students_categorized = pl.when(pl.col("test_score") >=90).then("Excellent") \
-        .when(pl.col("test_score") >= 75).then("Good") \
-        .when(pl.col("test_score") < 75).then("Needs Improvement") \
-        .otherwise("Unknown")
-
-    return students_categorized
+    return
 
 
 @app.cell(hide_code=True)
@@ -149,26 +145,43 @@ def _(pl):
     # TODO: Load the sales.json file
     # The file is at: ../data/raw/sales.json
 
-    sales = pl.read_json("../data/raw/sales.json")  # Replace with pl.read_json(...)
-    return sales
-
-
-@app.cell
-def _(sales):
-    # TODO: Display basic info about the sales dataset
-    # How many transactions? What's the date range?
-    print("Number of transactions:", len(sales))
-    print("Date range:", sales["date"].min(), "to", sales["date"].max)
+    sales = None  # Replace with pl.read_json(...)
     return
 
 
 @app.cell
-def _(pl, sales):
+def _():
+    # TODO: Display basic info about the sales dataset
+    # How many transactions? What's the date range?
+    return
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(r"""
+    ## Part 5: Aggregations and Grouping
+    """)
+    return
+
+
+@app.cell
+def _():
+    # TODO: Calculate total sales by product_category
+    # Sum up the total_amount for each category
+    # Sort by total sales descending
+
+    category_sales = None  # Use group_by() and agg()
+
+    return
+
+
+@app.cell
+def _():
     # TODO: Find the average transaction amount by payment_method
     from click import group
 
-    avg_by_payment = sales.group_by("payment_method").agg(pl.mean("total_amount").alias("avg_transaction_amount"))  # Use group_by() and agg()
-    print(avg_by_payment)
+    avg_by_payment = None
+
     return
 
 
@@ -178,11 +191,8 @@ def _(pl, sales):
     # Also calculate the total revenue per region
     from numpy.char import count
 
-    region_summary = sales.group_by("region").agg(
-        pl.count("transaction_id").alias("transaction_count"),
-        pl.sum("total_amount").alias("total_revenue")
-    )  # Group by region, count and sum
-    print(region_summary)
+    region_summary = None  # Group by region, count and sum
+
     return
 
 
@@ -199,12 +209,8 @@ def _(pl, sales):
     # TODO: Convert the date column to datetime type
     # Then extract the month and create a new column "month"
 
-    sales_with_month = sales.with_columns(
-        pl.col("date").str.to_date().alias("date"),
-        pl.col("date").str.to_date().dt.month().alias("month")  # Chain the conversion here
-    )
-    print(sales_with_month.select("date", "month").head())
-    return (sales_with_month,)
+    sales_with_month = None  # Use with_columns() and pl.col().str.to_date()
+    return
 
 
 @app.cell
@@ -212,8 +218,7 @@ def _(pl, sales_with_month):
     # TODO: Calculate total sales by month
     # Show which month had the highest revenue
 
-    monthly_sales = sales_with_month.group_by("month").agg(pl.sum("total_amount").alias("total_sales")).sort("total_sales", descending=True)
-    print(monthly_sales)   
+    monthly_sales = None
     return
 
 
